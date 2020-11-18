@@ -13,14 +13,11 @@ angular.module('mpk').factory('kanbanManipulator', function () {
     addColumn: function(kanban, columnName){
       kanban.columns.push(new KanbanColumn(columnName));
     },
-    //Modified by Alfred, Backlog 1.1, add EstManHours
-    addCardToColumn: function(kanban, column, cardTitle, EstManHours, details, color, priority, targetCompletionDate, 
-      handledby){
- 
+
+    addCardToColumn: function(kanban, column, cardTitle, details, color){
       angular.forEach(kanban.columns, function(col){
         if (col.name === column.name){
-          col.cards.push(new KanbanCard(cardTitle, EstManHours, details, color, priority, targetCompletionDate, 
-            handledby));
+          col.cards.push(new KanbanCard(cardTitle, details, color));
         }
       });
     },

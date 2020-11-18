@@ -7,11 +7,8 @@ var NewKanbanController = function ($scope, kanbanRepository, kanbanManipulator)
 		$scope.model.kanbanNames = allKanbanNames;
 		$scope.model.kanbanName = '';
 		$scope.model.numberOfColumns = 3;
-
-		//Modified by Alfred Li Backlog 1.1
-		$scope.model.numberOfSprints = 3;
-
 		$scope.model.useTemplate = '';
+
 		$scope.showNewKanban = true;
 	});
 
@@ -19,8 +16,8 @@ var NewKanbanController = function ($scope, kanbanRepository, kanbanManipulator)
 		if (!this.newKanbanForm.$valid){
 			return false;
 		}
-        //Modified By Alfred
-		var newKanban = new Kanban($scope.model.kanbanName, $scope.model.numberOfColumns, $scope.model.numberOfSprints);
+
+		var newKanban = new Kanban($scope.model.kanbanName, $scope.model.numberOfColumns);
 
 		if ($scope.model.useTemplate != ''){
 			var templateKanban = kanbanRepository.all()[$scope.model.useTemplate];
@@ -35,7 +32,6 @@ var NewKanbanController = function ($scope, kanbanRepository, kanbanManipulator)
 
 		$scope.kanbanName = '';
 		$scope.numberOfColumns = 3;
-		$scope.numberOfSprints = 3;
 		
 		kanbanRepository.setLastUsed(newKanban.name);
 
