@@ -1,0 +1,48 @@
+a { cursor: pointer; }
+#kanbanName a { color: #ddd; }
+div.navbar-header form div.input-group { margin-top: 7px;}
+.cardInputs { width: 450px; color: #555555; }
+#quickSwitch { padding: 15px 10px; margin-bottom: 0px;}
+
+.cardDetails { 
+  border: 1px solid #CCCCCC;
+  padding: 4px 6px;
+  height: 150px;
+  margin-bottom: 0px;
+  overflow: auto;
+  background-color: #eeeeee;
+}
+
+input.kanbanKey {
+	width: 98%; 
+	color: #555555;
+	font-weight: bold;
+	padding-right: 0px;
+	font-size: 1.5em;
+}
+
+.cards, .cards-no-sort { padding: 0px; margin: 0px; clear: both; overflow: scroll;}
+.card { white-space: normal;}
+#info {
+  padding: 10px 15px;
+  color: #8a8a8a;
+  margin-right: 30px;
+}
+
+#info .spinner { padding: 10px 15px; left: 0px;}
+#info .error { color: #FF9E9E;}
+#info #error a { color: #FF9E9E;}
+
+#message { float: left; }
+
+.colorBox { cursor: pointer; }
+
+.shortcut { color: #aaa; padding-top: 2px;}
+
+div.help > div.modal-dialog { width: 90%; }
+div.help div.modal-body { overflow: scroll;}
+.version { color: #aaa; }
+
+div.archive > div.modal-dialog { width: 90%; }
+
+.modal-footer { padding-left: 0px; padding-right: 0px;}
