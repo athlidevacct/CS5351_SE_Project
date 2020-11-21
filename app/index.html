@@ -218,14 +218,14 @@
                 </textarea>
             </div>
         </div>
-  
+       <!--
         <div class="form-group">
             <label class="control-label">Card color</label>
         </div>
         <div class="form-group">
             <color-selector options="colorOptions" ng-model="newCard.cardColor" prefix="newCardColor" class="colorSelector" show-hex-code="true"/>
         </div>
-
+       -->
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Add</button>
@@ -375,14 +375,14 @@
                   </div>
               </div>
           </div>
-  
+  <!--
           <div class="form-group">
               <label class="control-label">Card color</label>
           </div>
           <div class="form-group">
               <color-selector options="colorOptions" ng-model="card.color" prefix="editCardColor" class="colorSelector" show-hex-code="true" />
           </div>
-
+  -->
         </form>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -697,3 +697,54 @@
         <!-- endbuild -->
 </body>
 </html>
+
+<!--
+Cognito_scrumappAuth_Role
+Cognito_scrumappUnauth_Role
+
+// Initialize the Amazon Cognito credentials provider
+AWS.config.region = 'us-east-1'; // Region
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'us-east-1:6f922beb-8015-47d4-af50-693e9e7e0a19',
+});
+
+jsonstorage-678535459
+
+{
+   "Version": "2012-10-17",
+   "Statement": [
+      {
+         "Effect": "Allow",
+         "Action": [
+            "s3:DeleteObject",
+            "s3:GetObject",
+            "s3:ListBucket",
+            "s3:PutObject"
+         ],
+         "Resource": [
+            "arn:aws:s3:::jsonstorage-678535459/*"
+         ]
+      }
+   ]
+}
+
+scrumapp_s3_policy
+
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "PUT",
+            "POST",
+            "GET",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": []
+    }
+]
+-->

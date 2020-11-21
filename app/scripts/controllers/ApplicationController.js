@@ -70,7 +70,10 @@ angular.module('mpk').controller('ApplicationController',
 	$scope.kanbanMenu.openImport = function(){
 		$scope.$broadcast('OpenImport');
 	};
-
+	//Alfred Li Add burndown chart link
+	$scope.cloudMenu.burndownchart = function(kanbanName){
+		$scope.$broadcast('Burndownchart',kanbanName);
+	};
 	$scope.cloudMenu.openCloudSetup = function(){
 		$scope.$broadcast('OpenCloudSetup');
 	};

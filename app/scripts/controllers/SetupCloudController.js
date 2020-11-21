@@ -1,10 +1,22 @@
 'use strict';
 
-var SetupCloudController = function($scope, cloudService){
+var SetupCloudController = function($scope, $http,$sce, cloudService){
 	$scope.model = {useLocalCloud: false, localCloudUrl: ''};
 	$scope.model.showConfigurationError = true;
 
-	$scope.showCloudSetup = false;
+    $scope.showCloudSetup = false;
+    $scope.showBurndownchart = false;
+	//Alfred add burndownchart
+	$scope.$on('Burndownchart', function(e, name){
+    
+        var fileURL = "https://scrum-91875346894.s3.amazonaws.com/create_chart.html?filename=" +name + "-export.json"
+        
+        $scope.url = $sce.trustAsResourceUrl(fileURL);
+    
+        $scope.showBurndownchart = true;
+      
+
+	});
 
 	$scope.$on('OpenCloudSetup', function(){
 		var settings = cloudService.loadSettings();

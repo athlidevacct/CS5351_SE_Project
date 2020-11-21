@@ -9,7 +9,6 @@ var CloudMenuController = function($scope, $modal, kanbanRepository, cloudServic
 		});
 		return false;
 	};
-
 	$scope.upload = function(){
 		if (!cloudService.isConfigurationValid()){
 			return $scope.openCloudSetup(true);
