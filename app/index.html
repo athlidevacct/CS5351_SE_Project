@@ -34,7 +34,8 @@
   <div class="navbar-inner">
     <div class="container">
       <div class="navbar-header col-md-3">
-        <span id="kanbanName" class="navbar-brand" ng-model="kanban" ng-hide="editingName"><a class="renameKanban" ng-click="editingKanbanName()">{{kanban.name}}</a></span>
+        <span id="kanbanName" class="navbar-brand" ng-model="kanban" ng-hide="editingName">
+          <a class="renameKanban" ng-click="editingKanbanName()">{{kanban.name}}</a></span>
         <div ng-show="editingName" class="pull-left">
           <form ng-submit="rename()" >
             <div class="input-group">
@@ -46,6 +47,7 @@
           </form>
         </div>
       </div>
+
       <div class="col-md-9">
         <ul class="nav navbar-nav pull-right" id="menu">
             <li class="dropdown">
@@ -59,21 +61,26 @@
                     <li role="presentation" class="divider"></li>
                     <li><a title="Export Kanban to file" ng-click="kanbanMenu.openExport(allKanbans, kanban.name)" href=""><i class="glyphicon glyphicon-save"></i> Export</a></li>
                     <li><a title="Import Kanban from file" ng-click="kanbanMenu.openImport()" href=""><i class="glyphicon glyphicon-open"></i> Import</a></li>
+      
                     <li role="presentation" class="divider"></li>
                     <li><a title="Help" ng-click="showHelp=true" href=""><i class="glyphicon glyphicon-question-sign"></i> Help</a></li>
                 </ul>
             </li>
         </ul>
         <ul class="nav navbar-nav pull-right" id="cloudMenu">
+          <li><a ng-click="cloudMenu.burndownchart(kanban.name)" href="">Burndown chart</a></li>
+          <!--
           <li class="dropdown"> 
             <a class="dropdown-toggle" data-toggle="dropdown">Cloud <span class="caret"></span></a>
             <ul class="dropdown-menu">
+              
               <li><a ng-click="cloudMenu.openCloudSetup()" href=""><i class="glyphicon glyphicon-wrench"></i> Setup</a></li>
               <li><a ng-click="cloudMenu.upload()" href=""><i class="glyphicon glyphicon-upload"></i> Upload</a></li>
               <li><a ng-click="cloudMenu.download()" href=""><i class="glyphicon glyphicon-download"></i> Download</a></li>
               <li><a href="http://localhost:8080/" target="blank"><i class="glyphicon glyphicon-hand-right"></i> Go to Cloud</a></li>
             </ul>
           </li>
+          -->
         </ul>
         <div id="info" class="nav pull-right" ng-show="showInfo">
           <span id="error" class="error" ng-show="showError"><a ng-click="showInfo=false;showError=false;errorMessage=''">{{errorMessage}}</a></span>
@@ -106,7 +113,15 @@
                     <a class="pull-right" ng-click="delete(card, column)"><i class="glyphicon glyphicon-remove"></i></a>
                     <span style="margin-right:10px;" class="pull-right" ng-show="hasDetails(card)"><i class="glyphicon glyphicon-list-alt"></i></span>
                     <a class="pull-right" title="Archive" ng-click="archive(kanban, column, card)" ng-show="isLastColumn(column.name, kanban)"><i class="glyphicon glyphicon-folder-close"></i></a>
-                    <a ng-click="openCardDetails(card)"><span>{{card.name}}</span></a>
+                    <!--Modified by Alfred Li, Backlog 2.1-->
+                    <a ng-click="openCardDetails(card)">
+                      <div>Title: {{card.name}}</div>
+                      <div>Detail: {{card.details}}</div>
+                      <div>Target Completion Date: {{card.targetCompletionDate}}</div>
+                      <div>Handled By: {{card.handledby}}</div>
+                      <div>Status: {{completedSprints(card)}}</div>
+                      <!--<div>Number of Sprints: {{kanban.numberOfSprints}}</div>-->
+                    </a>
                 </li>
             </ul>
         </div>
@@ -166,20 +181,51 @@
               <input type="text" id="newCardTitle" placeholder="Title on a card" ng-model="newCard.title" required focus-me class="cardInputs form-control" name="cardTitle"/>
             </div>
         </div>
+        <!--Alfred Li Modified on 2020-10-15 Backlog 1.1-->
+        <div class="form-group">
+          <label class="control-label" for="newCardEstManHours">Estimation Man Hours</label>
+          <div>
+            <input type="number" id="newCardEstimation" placeholder="Estimation on a card" ng-model="newCard.EstManHours" required focus-me class="cardInputs form-control" name="cardEstManHours"/>
+          </div>
+        </div>
+        <!--Alfred Li Modified on 2020-10-15 Backlog 1.1-->
+        <div class="form-group">
+          <label class="control-label" for="newCardEstManHours">Target Completion Date</label>
+          <div>
+              <input type="text" id="newCardtargetCompletionDate" placeholder="dd/MM/yyyy" ng-model="newCard.targetCompletionDate" required focus-me class="cardInputs form-control" name="cardtargetCompletionDate"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="newCardPriority">Priority (1>2>3>4>5)</label>
+          <div>
+            <select name="cardpriority" id="newCardPriority" ng-model="newCard.priority" ng-options="x for x in priorityList">
+            </select> 
+          </div>
+        </div>
+        <!--Alfred Li Modified on 2020-10-15 Backlog 1.1-->
+        <div class="form-group">
+          <label class="control-label" for="newCardhandledby">Handled by</label>
+            <div>
+              <input type="text" id="newCardhandledby" placeholder="Handled by" ng-model="newCard.handledby" 
+                    required focus-me class="cardInputs form-control" name="cardhandledby"/>
+            </div>
+        </div>
+        <!--End Modified-->
         <div class="form-group">
             <label class="control-label" for="newCardDetails">More details <small>(optional)</small></label>
             <div>
-                <textarea id="newCardDetails" ng-model="newCard.details" class="cardInputs form-control" rows="7">
+                <textarea id="newCardDetails" ng-model="newCard.details" class="cardInputs form-control" rows="3">
                 </textarea>
             </div>
         </div>
+       <!--
         <div class="form-group">
             <label class="control-label">Card color</label>
         </div>
         <div class="form-group">
             <color-selector options="colorOptions" ng-model="newCard.cardColor" prefix="newCardColor" class="colorSelector" show-hex-code="true"/>
         </div>
-
+       -->
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Add</button>
@@ -205,13 +251,123 @@
                 </div>
               </div>
           </div>
+          <!--Modified by Alfred, Add Estimation Man Hours, Backlog 1.1-->
+          <div class="form-group">
+            <label class="control-label" for="newCardEstManHours">Estimation Man Hours</label>
+            <div class="controls">
+              <ng-form ng-submit="editingEstManHours = false">
+              <div class="input-group">
+                <input name="cardEstManHours" type="number" id="cardEstManHours" placeholder="Estimation Hours" ng-model="card.EstManHours" required class="form-control" ng-disabled="!editingEstManHours" focus-me />
+                <span class="input-group-btn">
+                  <a title="OK" class="btn btn-default" ng-click="editingEstManHours = false" ng-hide="!editingEstManHours"><i class="glyphicon glyphicon-ok"></i></a>
+                  <a title="Edit Estimation Man Hours" class="btn btn-default" ng-click="editingEstManHours= true" ng-hide="editingEstManHours"><i class="glyphicon glyphicon-pencil"></i></a>
+                </span>
+              </ng-form>
+              </div>
+            </div>
+          </div>
+          <!--Modified by Alfred, Add Terget Completion Date, Backlog 1.1-->
+          <div class="form-group">
+            <label class="control-label" for="newCardTargetCompletiondate">Target Completion Date</label>
+            <div class="controls">
+              <ng-form ng-submit="editingtargetCompletionDate = false">
+              <div class="input-group">
+                <input name="cardtargetCompletionDate" type="text" id="cardtargetCompletionDate" placeholder="dd/MM/yyyy" ng-model="card.targetCompletionDate" 
+                required class="form-control" ng-disabled="!editingtargetCompletionDate" focus-me />
+                <span class="input-group-btn">
+                  <a title="OK" class="btn btn-default" ng-click="editingtargetCompletionDate = false" ng-hide="!editingtargetCompletionDate"><i class="glyphicon glyphicon-ok"></i></a>
+                  <a title="Edit Target Completion Date" class="btn btn-default" ng-click="editingtargetCompletionDate= true" ng-hide="editingtargetCompletionDate"><i class="glyphicon glyphicon-pencil"></i></a>
+                </span>
+              </ng-form>
+              </div>
+            </div>
+          </div>
+          <!--Modified by Alfred, Add Priority, Backlog 1.1-->
+          <div class="form-group">
+            <label class="control-label" for="newCardPriority">Priority (1>2>3>4>5)</label>
+            <div class="controls">
+              <ng-form ng-submit="editingPriority = false">
+              <div class="input-group">
+                <input name="cardPriority" type="text" 
+                id="cardPriority" ng-model="card.priority" required class="form-control" ng-disabled="!editingPriority" focus-me />
+                <span class="input-group-btn">
+                  <a title="OK" class="btn btn-default" ng-click="editingPriority = false" ng-hide="!editingPriority"><i class="glyphicon glyphicon-ok"></i></a>
+                  <a title="Edit Priority" class="btn btn-default" ng-click="editingPriority= true" ng-hide="editingPriority"><i class="glyphicon glyphicon-pencil"></i></a>
+                </span>
+              </ng-form>
+              </div>
+            </div>
+          </div>
+          <!--Modified by Alfred, Add handledby, Backlog 1.1-->
+          <div class="form-group">
+            <label class="control-label" for="newCardhandledby">Handled By</label>
+            <div class="controls">
+              <ng-form ng-submit="editinghandledby = false">
+              <div class="input-group">
+                <input name="cardhandledby" type="text" id="cardhandledby" placeholder="handled by" ng-model="card.handledby" 
+                required class="form-control" ng-disabled="!editinghandledby" focus-me />
+                <span class="input-group-btn">
+                  <a title="OK" class="btn btn-default" ng-click="editinghandledby = false" ng-hide="!editinghandledby"><i class="glyphicon glyphicon-ok"></i></a>
+                  <a title="Edit Handled By" class="btn btn-default" ng-click="editinghandledby= true" ng-hide="editinghandledby"><i class="glyphicon glyphicon-pencil"></i></a>
+                </span>
+              </ng-form>
+              </div>
+            </div>
+          </div>
+          <!--Modified by Alfred, Add handledby, Backlog 1.1-->
+          <div class="form-group">
+            <label class="control-label" for="newCardProgress">Please only input {{kanban.numberOfSprints}} Sprints.</label>
+            <a title="OK" class="btn btn-default" ng-click="editingProgress = false" ng-hide="!editingProgress"><i class="glyphicon glyphicon-ok"></i></a>
+            <a title="Edit Completion Hours" class="btn btn-default" ng-click="editingProgress= true" ng-hide="editingProgress"><i class="glyphicon glyphicon-pencil"></i></a>
+
+            <div class="controls">
+              <ng-form ng-submit="editingProgress = false">
+                <div>
+                  <label class="control-label">Total Completion Hours: {{totalCompletionHours(card.completedHoursS1, card.completedHoursS2, card.completedHoursS3, card.completedHoursS4, card.completedHoursS5)}}</label>
+                </div>
+              <div class="input-group">
+                <div><label class="control-label">Sprint 1</label>
+              <input name="cardCompletionHoursS1" type="number" id="cardCompletionHoursS1" 
+                placeholder="Sprint(1) Hours" ng-model="card.completedHoursS1"
+                required class="form-control" ng-disabled="!editingProgress" focus-me />
+              </div>
+              <div>
+                <label class="control-label">Sprint 2</label>
+                <input name="cardCompletionHoursS2" type="number" id="cardCompletionHoursS2" 
+                placeholder="Sprint(2) Hours" ng-model="card.completedHoursS2" 
+                required class="form-control" ng-disabled="!editingProgress" focus-me />
+              </div>
+              <div> 
+                <label class="control-label">Sprint 3</label>
+                <input name="cardCompletionHoursS3" type="number" id="cardCompletionHoursS3" 
+                placeholder="Sprint(3) Hours" ng-model="card.completedHoursS3" 
+                required class="form-control" ng-disabled="!editingProgress" focus-me />
+              </div>
+              <div>
+                <label class="control-label">Sprint 4</label>
+                <input name="cardCompletionHoursS4" type="number" id="cardCompletionHoursS4" 
+                placeholder="Sprint(4) Hours" ng-model="card.completedHoursS4" 
+                required class="form-control" ng-disabled="!editingProgress" focus-me />
+              </div>
+              <div>
+                <label class="control-label">Sprint 5</label>
+                <input name="cardCompletionHoursS5" type="number" id="cardCompletionHoursS5" 
+                placeholder="Sprint(5) Hours" ng-model="card.completedHoursS5" 
+                required class="form-control" ng-disabled="!editingProgress" focus-me />
+                
+              </div>
+
+              </ng-form>
+            </div>
+          </div>
+          </div>
           <div class="form-group">
               <label class="control-label" for="cardTitle">Details</label>
 
               <div class="controls">
                   <div class="input-group">
                     <div class="form-control cardDetails cardInputs" ng-show="!editingDetails" ng-bind-html="card.details|linky|cardDetails"></div>
-                    <textarea id="details" ng-model="card.details" class="cardInputs form-control" rows="7" ng-show="editingDetails"></textarea>
+                    <textarea id="details" ng-model="card.details" class="cardInputs form-control" rows="3" ng-show="editingDetails"></textarea>
                     <span class="input-group-btn">
                       <a title="OK" ng-click="editingDetails = false" ng-hide="!editingDetails" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i></a>
                       <a title="Edit card details" ng-click="editingDetails = true" ng-hide="editingDetails" class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i></a>
@@ -219,12 +375,14 @@
                   </div>
               </div>
           </div>
+  <!--
           <div class="form-group">
               <label class="control-label">Card color</label>
           </div>
           <div class="form-group">
               <color-selector options="colorOptions" ng-model="card.color" prefix="editCardColor" class="colorSelector" show-hex-code="true" />
           </div>
+  -->
         </form>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -237,7 +395,7 @@
   <mpk-modal title="New Kanban board" visible="showNewKanban">
     <form class="noMargin" name="newKanbanForm">
         <div class="form-group">
-          <label class="control-label" for="kanbanNameFormField">Kanban name</label>
+          <label class="control-label" for="kanbanNameFormField">Project name</label>
           <div>
             <input type="text" id="kanbanNameFormField" placeholder="Kanban name" class="form-control" ng-model="model.kanbanName" required focus-me />
           </div>
@@ -246,6 +404,13 @@
           <label class="control-label" for="numberOfColumnsField">Number of columns</label>
           <div>
             <select id="numberOfColumnsField" ng-model="model.numberOfColumns" class="form-control" ng-options="number for number in [2,3,4,5,6,7,8,9]">
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="numberOfColumnsField">Number of Sprints</label>
+          <div>
+            <select id="numberOfColumnsField" ng-model="model.numberOfSprints" class="form-control" ng-options="number for number in [1,2,3,4,5]">
             </select>
           </div>
         </div>
@@ -384,6 +549,7 @@
       <div class="modal-footer">
         <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
         <button class="btn btn-primary" type="submit" ng-click="doExport()">Export</button>
+        <button class="btn btn-primary" type="submit" ng-click="doExportToAWS()">Export to AWS S3</button>
       </div>
     </form>
   </mpk-modal>
@@ -392,6 +558,7 @@
 <div ng-controller="ImportController">
   <mpk-modal visible="showImportModal" title="Import Kanban from file">
     <form name="importKanban" class="noMargin">
+      
       <div class="form-group">
         <label class="control-label" for="kanbanToExport">Select file:</label>
         <input type="file" id="kanbanFile" name="kanbanFile" read-file ng-model="model.file" ng-change="model.fileSelected=true"/>
@@ -400,6 +567,7 @@
       <div class="modal-footer">
         <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
         <button class="btn btn-primary" type="submit" ng-click="import()" ng-disabled="model.file==''">Import</button>
+        <button class="btn btn-primary" type="submit" ng-click="importFromAWS()">Import from AWS S3</button>
       </div>
     </form>
   </mpk-mdodal>
@@ -408,6 +576,14 @@
 
 <!-- Cloud stuff from here -->
 <div ng-controller="SetupCloudController">
+  <mpk-modal title="Burndown Chart" visible ="showBurndownchart">
+    <iframe ng-src="{{url}}" width="100%" height="300"></iframe>
+    <!--
+    <div id="chart_div" style="display:none;"></div>
+    <div id='png'></div>
+    -->
+  </mpk-modal>
+  <!--
   <mpk-modal title="Cloud Setup" visible="showCloudSetup">
     <form ng-submit="saveSettings()" name="cloudSettings" class="noMargin">
       <div class="alert alert-danger" ng-show="model.showConfigurationError">
@@ -463,11 +639,12 @@
 
     </form>
   </mpk-modal>
+  -->
 </div>
 
 </script>
 <footer></footer>
-
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/angular-route/angular-route.min.js"></script>
@@ -478,6 +655,7 @@
         <script src="bower_components/spinjs/spin.js"></script>
         <script src="bower_components/FileSaver/FileSaver.min.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/aws-sdk/aws-sdk.min.js"></script>
         <script src="scripts/themes.js"></script>
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -519,3 +697,54 @@
         <!-- endbuild -->
 </body>
 </html>
+
+<!--
+Cognito_scrumappAuth_Role
+Cognito_scrumappUnauth_Role
+
+// Initialize the Amazon Cognito credentials provider
+AWS.config.region = 'us-east-1'; // Region
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'us-east-1:6f922beb-8015-47d4-af50-693e9e7e0a19',
+});
+
+jsonstorage-678535459
+
+{
+   "Version": "2012-10-17",
+   "Statement": [
+      {
+         "Effect": "Allow",
+         "Action": [
+            "s3:DeleteObject",
+            "s3:GetObject",
+            "s3:ListBucket",
+            "s3:PutObject"
+         ],
+         "Resource": [
+            "arn:aws:s3:::jsonstorage-678535459/*"
+         ]
+      }
+   ]
+}
+
+scrumapp_s3_policy
+
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "PUT",
+            "POST",
+            "GET",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": []
+    }
+]
+-->

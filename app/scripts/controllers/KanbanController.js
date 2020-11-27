@@ -16,6 +16,44 @@ angular.module('mpk').controller('KanbanController', function KanbanController($
 		$scope.$broadcast('OpenCardDetails', card);
 	};
 
+	//modified by Alfred Li Backlog 1.1
+	$scope.completedSprints = function(card){
+		var retSprints = "";
+		var total =0;
+		var s1 = parseInt(card.completedHoursS1) * 1; 
+		var s2 = parseInt(card.completedHoursS2) * 1; 
+		var s3 = parseInt(card.completedHoursS3) * 1;
+		var s4 = parseInt(card.completedHoursS4) * 1;
+		var s5 = parseInt(card.completedHoursS5) * 1;	
+
+		if(s1>0){
+			retSprints = "Sprint 1";
+			total = total + s1;
+		}
+		if(s2>0){
+			retSprints = "Sprint 2";
+			total = total + s2;
+		}
+		if(s3>0){
+			retSprints = "Sprint 3";
+			total = total + s3;	
+		}
+		if(s4>0){
+			retSprints = "Sprint 4";
+			total = total + s4;	
+		}
+		if(s5>0){
+			retSprints = "Sprint 5";
+			total = total + s5;	
+		}
+		if(total == parseInt(card.EstManHours))
+		   retSprints = "Completed on " + retSprints;
+		else
+		   retSprints = "Not Completed. Only " + (total/parseInt(card.EstManHours)*100).toFixed(2) + "%";
+
+		return retSprints;
+	};
+
 	$scope.detailsFor = function(card){
 		if (card.details !== undefined && card.details !== '') {
 			return card.details;
