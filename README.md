@@ -1,46 +1,20 @@
-My Personal Kanban (MPK)
+CS5351 Group Project - Features Enhancement on Kanban Board
 ==========================
 
-This is a small and simple in-browser application that aspire to be offline Personal Kanban board.
+This project is to enhance some features for Personal Kanban board. So that we can run the Scrum process in the enhanced application.
+The original project is clone from Personal Kanban.
+https://github.com/greggigon/my-personal-kanban
 
-It is a single page JavaScript application with very basic functionality. 
+The application can be hosted in AWS S3 static web service.
+For saving the JSON file in AWS S3 bucket, please revise the AWS S3 bucket URL in app\script\controllers\SetupCloudController.js.
 
-## Download
+var fileURL = "https://scrum-91875346894.s3.amazonaws.com/create_chart.html?filename=" +name + "-export.json"
 
-You can get latest release zip [at this link](https://github.com/greggigon/my-personal-kanban/blob/master/my-personal-kanban-0.8.0.zip?raw=true). Lastest version is 0.8.0 and includes new features.
+You can also export the JSON on your local drive if not using AWS S3.
 
-## How to use it?
+The Protractor testing script are located in Protractor folder. For installatiopn and running the script, please refer to Protractor tutorial site.
+https://www.protractortest.org/#/tutorial
 
-Download the applicaton distribution zip file, unzip it at your prefered location, open __index.html__ page in your browser and your done.
+For running the Allure Report for testing result, please install allure-jasmine plugin and run command allure serve.
+https://github.com/allure-framework/allure-jasmine
 
-There is no need to be connected to Internet to use it. You can run it in any modern browser. The application will store your data in Web Browser's local storage, so you will not loose it.
-
-### Functionality
-
-The functionality is very simple and basic. For a short screencast demo you can navigate to [Github pages](http://greggigon.github.io/my-personal-kanban/) .
-
-Kanban boards with 2 to 10 columns, name columns and delete kanban.
-
-You can add cards to columns and drag them between columns as well as remove them.
-
-## Adding Themes
-
-Themes are just a simple CSS files. They should be put in the __styles/themes__ folder. New Theme should be added to __scripts/themes.js__ file. Also, a Theme image (jpg) can be placed in __img/themes__ folder. Name of the image should be the same as the __css__ attribute in the themes.js file.
-
-## A bit of history
-
-I started this little project 2 years ago when I decided to familiarise myself with HTML5, Pure JavaScript and CSS.
-
-I used jQuery with QUnit for JavaScript TDD testing.
-
-I managed to get it to a workable state and stop developing it.
-
-After first public release not too long ago, I decided to rewrite it in __Angular__.
-
-This application is the result of me doing so, while attempting to learn Angular at the same time :)
-
-### Want to help?
-
-If you want to help me with styling or anything else, please do get in touch.
-
-Any issues, raise it on github.
