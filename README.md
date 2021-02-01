@@ -1,4 +1,4 @@
-CS5351 Group Project - Features Enhancement on Kanban Board
+CS5351 Group Project - Features Enhancement on Kanban Board (AngularJS)
 ==========================
 
 This project is to enhance some features for Personal Kanban board. So that we can run the Scrum process in the enhanced application.
